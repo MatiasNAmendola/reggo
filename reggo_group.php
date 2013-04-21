@@ -54,30 +54,32 @@ class Group {
 				$invert = true;
 			}
 			
-			// To use in function below
-			$replacements = &self::$replacements;
+			// Capture all characters that should be in content
+			$contents = self::_capture_characters($char_types);
 			
-			$contents = array_reduce($char_types, function($result, $val) use ($replacements)
-			{
-				// Check that key exists
-				if(array_key_exists($val, self::$replacements))
-				{
-					return $result . $replacements[$val];
-				}
-			
-				return $result;
-			});
-			
-			$match = new Match\AnyOf($contents, $min, $max);
-			
-			// Check if this should be inverted
-			if($invert)
-			{
-				$match->invert();
-			}
+			$match = new Match\AnyOf($contents, $min, $max, $invert);
 			
 			$this->contents[] = $match;
 		}
+	}
+	
+	private static function _capture_characters($char_types)
+	{
+		// To use in function below
+		$replacements = &self::$replacements;
+		
+		$contents = array_reduce($char_types, function($result, $val) use ($replacements)
+		{
+			// Check that key exists
+			if(array_key_exists($val, self::$replacements))
+			{
+				return $result . $replacements[$val];
+			}
+		
+			return $result;
+		});
+		
+		return $contents;
 	}
 	
 	public function group($name, $callable = NULL)

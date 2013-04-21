@@ -8,11 +8,12 @@ class AnyOf extends Base {
 	private $inverted = false;
 	private $contents;
 	
-	public function __construct($contents, $min = NULL, $max = NULL)
+	public function __construct($contents, $min = NULL, $max = NULL, $inverted = false)
 	{
 		parent::__construct($min, $max);
 		
 		$this->contents = $contents;
+		$this->inverted = $inverted;
 	}
 	
 	public function invert()
