@@ -10,10 +10,9 @@ class Reggo {
 	private $main_group;
 	private $flags = '';
 	
-	/*public function __construct(Reggo\Group &$group)
-	{
-		$this->main_group = $group;
-	}*/
+	// Flags
+	const FLAG_GLOBAL = 'g';
+	const FLAG_IGNORE_CASE = 'i';
 	
 	public function __construct($group_name, $callable = NULL)
 	{
@@ -25,6 +24,17 @@ class Reggo {
 		}
 		
 		$this->main_group = new Reggo\Group($group_name, $callable);
+	}
+	
+	/**
+	 * Set the flags for this regexp
+	 */
+	public function flags($str)
+	{
+		if(is_string($str))
+		{
+			$this->flags = $str;
+		}
 	}
 	
 	/**
@@ -75,6 +85,9 @@ class Reggo {
 		return preg_replace($this->compile(), $replacement, $str);
 	}
 	
+	/**
+	 * Compile into a regexp string
+	 */
 	public function compile()
 	{
 		$group = $this->main_group;
