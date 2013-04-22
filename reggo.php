@@ -96,4 +96,28 @@ class Reggo {
 		
 		return "/{$contents}/{$this->flags}";
 	}
+	
+	public function debug()
+	{
+		$items = $this->main_group->debug(0);
+		
+		foreach($items as $item)
+		{
+			$name = '';
+		
+			if($item[1] instanceof Reggo\Group)
+			{
+				$name = '[name:'.$item[1]->name.']';	
+			}
+			
+			$tabulator = str_pad('-> ', $item[0]*4 + 1, '-', STR_PAD_LEFT);
+			$compilation = $item[1]->compile();
+			
+			$str = str_pad($tabulator.$compilation, 50, ' ');
+			echo $str;
+			echo str_pad($name, 20, ' ');
+			echo str_pad('<-', 30, get_class($item[1]));
+			echo "\n";
+		}
+	}
 }

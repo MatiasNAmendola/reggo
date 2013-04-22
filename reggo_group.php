@@ -152,14 +152,22 @@ class Group {
 	 * Prints debug text to verify why regexp looks the way
 	 * it does
 	 */
-	public function debug()
+	public function debug($depth)
 	{
-		// Print for this group
-		echo $this->compile().PHP_EOL;
+		$items = array(array($depth, $this));
 	
 		foreach($this->contents as $part)
 		{
-			$part->debug();
+			if($part instanceof Group)
+			{
+				$items = array_merge($items, $part->debug($depth + 1));
+			}
+			else
+			{
+				$items[] = array($depth + 1, $part);
+			}
 		}
+		
+		return $items;
 	}
 }
