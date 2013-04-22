@@ -167,4 +167,49 @@ class ReggoTest extends PHPUnit_Framework_TestCase {
 		});
 		$this->assertSame('/adam\-hansson\,\ the\ one\ and\ only/', $reggo->compile());
 	}
+	
+	public function testGroups()
+	{
+		$reggo = new Utv\Reggo('test', function($group)
+		{
+			$group->group('next')->alpha();
+			$group->group('third')->num();
+			$group->group('fourth')->group('fifth')->num();
+		});
+		
+		$groups = $reggo->groups();
+		$this->assertEquals(5, count($groups));
+		//$this->assertContainsOnlyInstancesOf('Group', $groups);
+	}
+	
+	public function testMatch()
+	{
+		$reggo = new Utv\Reggo('test', function($group)
+		{
+			$group->group('name')->alpha('+');
+			$group->group('number')->num('+');
+		});
+		
+		$matching = $reggo->match('hellomoto097 hello38');
+		
+		// First match
+		$this->assertArrayHasKey('test', $matching[0]);
+		$this->assertArrayHasKey('name', $matching[0]);
+		$this->assertArrayHasKey('number', $matching[0]);
+		
+		$this->assertSame('hellomoto097', $matching[0]['test']);
+		$this->assertSame('hellomoto', $matching[0]['name']);
+		$this->assertSame('097', $matching[0]['number']);
+		
+		$this->assertSame(2, count($matching));
+		
+		// Second match
+		$this->assertArrayHasKey('test', $matching[1]);
+		$this->assertArrayHasKey('name', $matching[1]);
+		$this->assertArrayHasKey('number', $matching[1]);
+		
+		$this->assertSame('hello38', $matching[1]['test']);
+		$this->assertSame('hello', $matching[1]['name']);
+		$this->assertSame('38', $matching[1]['number']);
+	}
 }

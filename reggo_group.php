@@ -117,6 +117,27 @@ class Group {
 		return $this->exact($escaped);
 	}
 	
+	/**
+	 * Returns an array with all subgroups
+	 * in the right order
+	 */
+	public function groups()
+	{
+		// Add this
+		$groups = array($this);
+		
+		// Add all subgroups
+		foreach($this->contents as $content)
+		{
+			if($content instanceof Group)
+			{
+				$groups = array_merge($groups, $content->groups());
+			}
+		}
+		
+		return $groups;
+	}
+	
 	public function compile()
 	{
 		$contents = array_reduce($this->contents, function($result, $val)
@@ -125,5 +146,20 @@ class Group {
 		}, '');
 		
 		return '('.$contents.')';
+	}
+	
+	/**
+	 * Prints debug text to verify why regexp looks the way
+	 * it does
+	 */
+	public function debug()
+	{
+		// Print for this group
+		echo $this->compile().PHP_EOL;
+	
+		foreach($this->contents as $part)
+		{
+			$part->debug();
+		}
 	}
 }

@@ -25,24 +25,36 @@ class Reggo {
 		}
 		
 		$this->main_group = new Reggo\Group($group_name, $callable);
-		
-		// Check if provided a function
-		/*if(is_callable($callable))
+	}
+	
+	/**
+	 * List of all groups, in the right order
+	 */
+	public function groups()
+	{
+		return $this->main_group->groups();
+	}
+	
+	public function match($str)
+	{
+		$groups = $this->groups();
+		$group_keys = array_map(function($group)
 		{
-			// Create new group
-			$this->main_group = new Reggo\Group($group_name);
+			return $group->name;
+		}, $groups);
 		
-			// Call this callable
-			call_user_func_array($callable, array(&$this->main_group));
-			
-			//return new Reggo($group);
+		// Match
+		preg_match_all($this->compile(), $str, $matches, PREG_SET_ORDER);
+		
+		$match_arr = array();
+		
+		// Convert to nicer array
+		foreach($matches as $match)
+		{
+			$match_arr[] = array_combine($group_keys, $match);
 		}
-		else
-		{
-			// Only group name is provided, create default group
-			$this->main_group = new Reggo\Group($callable);
-			//return new Reggo($group);
-		}*/
+		
+		return $match_arr;
 	}
 	
 	public function compile()
