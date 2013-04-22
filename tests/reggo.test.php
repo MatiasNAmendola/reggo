@@ -212,4 +212,24 @@ class ReggoTest extends PHPUnit_Framework_TestCase {
 		$this->assertSame('hello', $matching[1]['name']);
 		$this->assertSame('38', $matching[1]['number']);
 	}
+	
+	public function testReplace()
+	{
+		$reggo = new Utv\Reggo(function($group)
+		{
+			$group->group('name')->alpha('+');
+			$group->num('*');
+		});
+		
+		$replaced = $reggo->replace('hellomoto38 and54 whello34', '$name');
+		$this->assertSame('hellomoto and whello', $replaced);
+
+		// Test with names overlapp
+		$replaced = $reggo->replace('hellomoto38 and54 whello34', '$names');
+		$this->assertSame('hellomotos ands whellos', $replaced);
+		
+		// Test replacing nothing
+		$replaced = $reggo->replace('hellomoto38 and54 whello34', '$all');
+		$this->assertSame('hellomoto38 and54 whello34', $replaced);
+	}
 }

@@ -57,6 +57,24 @@ class Reggo {
 		return $match_arr;
 	}
 	
+	/**
+	 * Replace string with new text
+	 * CAUTION: Use single quotes (') when you have $names in $replacement
+	 */
+	public function replace($str, $replacement)
+	{
+		$groups = $this->groups();
+		
+		// Replace all variables
+		for($i=0; $i < count($groups); $i += 1)
+		{
+			$group = $groups[$i];
+			$replacement = str_replace('$'.$group->name, '$'.$i, $replacement);
+		}
+	
+		return preg_replace($this->compile(), $replacement, $str);
+	}
+	
 	public function compile()
 	{
 		$group = $this->main_group;
