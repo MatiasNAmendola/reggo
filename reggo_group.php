@@ -61,6 +61,8 @@ class Group {
 			
 			$this->contents[] = $match;
 		}
+		
+		return $this;
 	}
 	
 	private static function _capture_characters($char_types)
