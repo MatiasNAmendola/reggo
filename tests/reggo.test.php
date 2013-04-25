@@ -232,4 +232,18 @@ class ReggoTest extends PHPUnit_Framework_TestCase {
 		$replaced = $reggo->replace('hellomoto38 and54 whello34', '$all');
 		$this->assertSame('hellomoto38 and54 whello34', $replaced);
 	}
+	
+	public function testEscape()
+	{
+		$tests = str_split('-_.\/"\'!#?+*}{[]');
+		$escaped = Utv\Reggo::escape($tests);
+		
+		$i = 0;
+		foreach($tests as $test)
+		{
+			$this->assertSame('\\'.$test, Utv\Reggo::escape($test));
+			$this->assertSame('\\'.$test, $escaped[$i]);
+			$i += 1;
+		}
+	}
 }

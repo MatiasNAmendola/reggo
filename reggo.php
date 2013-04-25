@@ -85,9 +85,22 @@ class Reggo {
 		return preg_replace($this->compile(), $replacement, $str);
 	}
 	
-	public static function escape($str)
+	public static function escape($input)
 	{
-		$escaped = preg_replace('/([^a-zA-Z0-9åäöÅÄÖ])/', '\\\\$0', $str);
+		$inputs = (array) $input;
+		
+		// Escape all input
+		$escaped = array_map(function($input)
+		{
+			return preg_replace('/([^a-zA-Z0-9åäöÅÄÖ])/', '\\\\$0', $input);
+		}, $inputs);
+	
+		// Only return a string if string is the input
+		if(is_string($input))
+		{
+			return $escaped[0];
+		}
+		
 		return $escaped;
 	}
 	
