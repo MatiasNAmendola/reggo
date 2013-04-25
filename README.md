@@ -190,6 +190,21 @@ $match = $reggo->match('Brad Pit, Lotten Harold');
 ```
 
 ### Replace
+Replace the match with something else. In `Reggo` you can use `$group_name` to replace with the match of that group, instead of `$0, $1 ...` as you normaly would.
+
+```php
+<?php
+// Matches a name as "first last"
+$reggo = new Utv\Reggo(function($reggo)
+{
+	$reggo->group('first')->alpha('+');
+	$reggo->space();
+	$reggo->group('last')->alpha('+');
+});
+
+// Replacing
+$reggo->replace('Brad Pit', 'Hans $last');		// Hans Pit
+```
 
 ### Compile
 Compiles `Reggo` into a normal regexp.
