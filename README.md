@@ -78,6 +78,7 @@ $reggo = new Utv\Reggo(function($reggo)
 
 $reggo->compile();
 // /([0-9])/
+```
 
 ### Matches
 There are predefined matches for characters, these are
