@@ -85,6 +85,12 @@ class Reggo {
 		return preg_replace($this->compile(), $replacement, $str);
 	}
 	
+	public static function escape($str)
+	{
+		$escaped = preg_replace('/([^a-zA-Z0-9åäöÅÄÖ])/', '\\\\$0', $str);
+		return $escaped;
+	}
+	
 	/**
 	 * Compile into a regexp string
 	 */
