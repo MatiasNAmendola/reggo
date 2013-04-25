@@ -1,8 +1,8 @@
 # Reggo
-Reggo is made to make it easier to create structure when making **Regular expressions**
+Reggo makes it easier to **Regular expressions** with structure
 
 ## Why?
-When creating a regexp, especially bigger ones, there is hard to keep a strucure. You can not
+When creating a regexp, especially bigger ones, it is hard to keep a strucure. You can not
 
 * Use comments
 * Split up in parts
@@ -21,13 +21,13 @@ $reggo = new Utv\Reggo(function($reggo)
 	$reggo->group('last')->alpha('+');
 });
 
-$reggo->compile();
-// /([a-zA-ZåäöÅÄÖ]+)\s([a-zA-ZåäöÅÄÖ]+)/
+// Compile into a normal regexp
+$reggo->compile();		// /([a-zA-ZåäöÅÄÖ]+)\s([a-zA-ZåäöÅÄÖ]+)/
 
-// Matching
+// Matching against a string
 $match = $reggo->match('Brad Pit');
 // array(
-// 		[0] = array(
+// 		[0] => array(
 //			'all' => 'Brad pit',
 // 			'first' => 'Brad',
 // 			'last' => 'Pit'
@@ -35,12 +35,11 @@ $match = $reggo->match('Brad Pit');
 // )
 
 // Replacing
-$reggo->replace('Brad Pit', 'Hans $last');
-// Hans Pit
+$reggo->replace('Brad Pit', 'Hans $last');		// Hans Pit
 ```
 
 ## Requirements
-Reggo requires **php 5.3** or later to work properly
+Reggo requires **php 5.3** or later to work properly. This is due to the use of `callbacks` as well as `__call()` and `__callStatic`. They are the things that make it possible to create a nice **API**.
 
 # Documentation
 
@@ -119,7 +118,7 @@ $reggo = new Utv\Reggo(function($reggo)
 ```
 
 ### Exact
-Makes an exact match, does not escape input
+Makes an exact match, does not escape input. Usage `exact($string)`
 
 ```php
 <?php
@@ -132,7 +131,7 @@ $reggo = new Utv\Reggo(function($reggo)
 ```
 
 ### Any
-Match any of the input chars
+Match any of the input chars, `any(array($str1, $st2...))`
 
 ```php
 <?php
@@ -150,7 +149,7 @@ $reggo = new Utv\Reggo(function($reggo)
 ```
 
 ### Escape
-To escape a string you can use the function `escape()`
+To escape a string you can use the function `escape($string)`
 
 ```php
 <?php
@@ -167,11 +166,93 @@ This will create an exact match for *hello-lotten*, the dash will be escaped.
 ## Functions
 
 ### Match
+Matches `Reggo` against a string and returns an array with all matches.
+
+```php
+// Matches a name as "first last"
+$reggo = new Utv\Reggo(function($reggo)
+{
+	$reggo->group('first')->alpha('+');
+	$reggo->space();
+	$reggo->group('last')->alpha('+');
+});
+
+$match = $reggo->match('Brad Pit, Lotten Harold');
+// array(
+// 		[0] => array(
+//			'all' => 'Brad pit',
+// 			'first' => 'Brad',
+// 			'last' => 'Pit'
+//		),
+//		[1] => array(...)
+// )
+
+```
 
 ### Replace
 
 ### Compile
+Compiles `Reggo` into a normal regexp.
+
+```php
+<?php
+
+$reggo = new Utv\Reggo(function($reggo)
+{
+	$reggo->num();
+});
+
+$reggo->flags(Utv\Reggo::FLAG_GLOBAL);
+
+// Compile into normal regexp
+$reggo->compile(); 		// /[0-9]/g
+```
 
 ### Flags
+You can add flags to the regexp by using the function `$reggo->flags($string)`.
+
+```php
+<?php
+
+$reggo = new Utv\Reggo(function($reggo)
+{
+	$reggo->num();
+});
+
+// Add global flag
+$reggo->flags('g');
+
+// Compile into normal regexp
+$reggo->compile();		// /[0-9]/g
+```
+
+You can use the globals if you do not remember the flags.
+
+```php
+$reggo->flags(Utv\Reggo::FLAG_GLOBAL);
+```
 
 ### Escape strings
+You can use `Reggo` to escape string for you, this way you can se cleaner code.
+
+```php
+<?php
+
+$reggo = new Utv\Reggo(function($reggo)
+{
+	$reggo->any(array(
+		'com',
+		'se',
+		Utv\Reggo::escape('co.uk')
+	));
+	
+	// Or escape the whole array
+	$reggo->any(Utv\Reggo::escape(array(
+		'com',
+		'se',
+		'co.uk'
+	)));
+});
+// /com|se|co\.uk/
+
+```
