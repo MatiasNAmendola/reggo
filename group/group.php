@@ -13,14 +13,15 @@ class Group {
 	
 	public static $replacements = array(
 		'alpha' 	=> 'a-zA-ZåäöÅÄÖ',
-		'alphaeng'	=> 'a-zA-ZåäöÅÄÖ',
+		'alphaeng'	=> 'a-zA-Z',
 		'lower'		=> 'a-zåäö',
 		'upper' 	=> 'A-ZÅÄÖ',
 		'num' 		=> '0-9',
 		'number' 	=> '0-9',
 		'dash' 		=> '\-\_',
 		'dot' 		=> '\.',
-		'period' 	=> '\.'
+		'period' 	=> '\.',
+		'space'		=> '\s'
 	);
 	
 	public function __construct($name, $callable = NULL)
@@ -113,9 +114,9 @@ class Group {
 		return $this;
 	}
 	
-	public function escape($string)
+	public function escape($str)
 	{
-		$escaped = preg_replace('/([^a-zA-Z0-9åäöÅÄÖ])/', '\\\\$0', $string);
+		$escaped = \Utv\Reggo::escape($str);
 		return $this->exact($escaped);
 	}
 	
