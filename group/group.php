@@ -2,9 +2,9 @@
 
 namespace Utv\Reggo;
 
-require_once('reggo_match_exact.php');
-require_once('reggo_match_any.php');
-require_once('reggo_match_any_of.php');
+require_once('match/exact.php');
+require_once('match/any.php');
+require_once('match/any_of.php');
 
 class Group {
 	

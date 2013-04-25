@@ -2,7 +2,7 @@
 
 namespace Utv\Reggo\Match;
 
-require_once('reggo_match_base.php');
+require_once('match/base.php');
 
 class AnyOf extends Base {
 	private $inverted = false;

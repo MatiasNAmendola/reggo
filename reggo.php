@@ -2,7 +2,7 @@
 
 namespace Utv;
 
-require_once('reggo_group.php');
+require_once('group/group.php');
 
 class Reggo {
 	
