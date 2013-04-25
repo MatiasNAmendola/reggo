@@ -67,6 +67,14 @@ class Reggo {
 		return $match_arr;
 	}
 	
+	/** 
+	 * Test function against a string
+	 */
+	public function test($str)
+	{
+		return preg_match($this->compile());
+	}
+	
 	/**
 	 * Replace string with new text
 	 * CAUTION: Use single quotes (') when you have $names in $replacement
