@@ -85,6 +85,16 @@ class Group {
 		return $contents;
 	}
 	
+	public function start()
+	{
+		return $this->exact('^');
+	}
+	
+	public function end()
+	{
+		return $this->exact('$');
+	}
+	
 	public function group($name, $callable = NULL)
 	{
 		$group = new Group($name, $callable);

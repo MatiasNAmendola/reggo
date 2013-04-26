@@ -149,6 +149,16 @@ class ReggoTest extends PHPUnit_Framework_TestCase {
 			$group->group('inner')->num();
 		});
 		$this->assertSame('/adam([0-9])/', $reggo->compile());
+		
+		// Start and end
+		$reggo = new Utv\Reggo(function($group)
+		{
+			$group->start();
+			$group->num();
+			$group->end();
+		});
+		
+		$this->assertSame('/^[0-9]$/', $reggo->compile());
 	}
 	
 	public function testCompileEscape()
