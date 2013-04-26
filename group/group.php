@@ -61,6 +61,8 @@ class Group {
 			$match = new Match\AnyOf($contents, $min, $max, $invert);
 			
 			$this->contents[] = $match;
+			
+			return $match;
 		}
 		
 		return $this;
@@ -106,22 +108,17 @@ class Group {
 	
 	public function any($contents_arr, $min = NULL, $max = NULL)
 	{
-		$this->contents[] = new Match\Any($contents_arr, $min, $max);
-		return $this;
+		$any = new Match\Any($contents_arr, $min, $max);
+		$this->contents[] = $any;
+		return $any;
 	}
 	
 	public function exact($string_or_callable)
 	{
-		if(is_string($string_or_callable))
-		{
-			$this->contents[] = new Match\Exact($string_or_callable);
-		}
-		else if(is_callable($string_or_callable))
-		{
-			call_user_func_array($string_or_callable, array(&$this));
-		}
+		$exact = new Match\Exact($string_or_callable);
+		$this->contents[] = $exact;
 		
-		return $this;
+		return $exact;
 	}
 	
 	public function escape($str)

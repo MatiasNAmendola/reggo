@@ -9,7 +9,14 @@ class Exact extends Base {
 	
 	public function __construct($contents)
 	{
-		$this->contents = $contents;
+		if(is_string($contents))
+		{
+			$this->contents = $contents;
+		}
+		else if(is_callable($string_or_callable))
+		{
+			$this->contents = call_user_func($contents));
+		}
 	}
 	
 	public function compile()
