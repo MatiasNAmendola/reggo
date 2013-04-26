@@ -164,7 +164,28 @@ $reggo = new Utv\Reggo(function($reggo)
 
 This will create an exact match for *hello-lotten*, the dash will be escaped.
 
+### Start and End
+To add the start character `^` or the end character `$` to the regexp, use the functions `$group->start()` and `$group->end()`.
+
+```php
+<?php
+
+$reggo = new Utv\Reggo(function($reggo)
+{
+	$reggo->start();
+	$reggo->number();
+	$reggo->end();
+});
+// /^[0-9]$/
+```
+
 ## Functions
+
+### New Reggo
+
+* Optional name
+* Callback
+* Without callback
 
 ### Match
 Matches `Reggo` against a string and returns an array with all matches.
@@ -187,8 +208,9 @@ $match = $reggo->match('Brad Pit, Lotten Harold');
 //		),
 //		[1] => array(...)
 // )
-
 ```
+
+The array contains all matches found for that pattern. Each match is **indexed by the group-name**. The default name for the whole pattern is **all** but this can be changed when creating a `new Reggo($name, $callback)` object.
 
 ### Replace
 Replace the match with something else. In `Reggo` you can use `$group_name` to replace with the match of that group, instead of `$0, $1 ...` as you normaly would.
