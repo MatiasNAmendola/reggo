@@ -256,4 +256,22 @@ class ReggoTest extends PHPUnit_Framework_TestCase {
 			$i += 1;
 		}
 	}
+	
+	public function testAnyOfMethods()
+	{
+	
+		$reggo = new Utv\Reggo(function($group)
+		{
+			$group->num()->once();
+		});
+		
+		$this->assertSame('/[0-9]/', $reggo->compile());
+		
+		$reggo = new Utv\Reggo(function($group)
+		{
+			$group->num()->zero_or_one();
+		});
+		
+		$this->assertSame('/[0-9]?/', $reggo->compile());
+	}
 }

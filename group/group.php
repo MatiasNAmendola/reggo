@@ -11,19 +11,6 @@ class Group {
 	public $name;
 	public $contents = array();
 	
-	public static $replacements = array(
-		'alpha' 	=> 'a-zA-ZåäöÅÄÖ',
-		'alphaeng'	=> 'a-zA-Z',
-		'lower'		=> 'a-zåäö',
-		'upper' 	=> 'A-ZÅÄÖ',
-		'num' 		=> '0-9',
-		'number' 	=> '0-9',
-		'dash' 		=> '\-\_',
-		'dot' 		=> '\.',
-		'period' 	=> '\.',
-		'space'		=> '\s'
-	);
-	
 	public function __construct($name, $callable = NULL)
 	{
 		$this->name = $name;
@@ -42,7 +29,7 @@ class Group {
 		$max = array_shift($attributes);
 	
 		// Check if any of the multiple [...] matches
-		if(strpos($name, '_') !== FALSE || array_key_exists($name, self::$replacements))
+		if(strpos($name, '_') !== FALSE || array_key_exists($name, Match\AnyOf::$replacements))
 		{
 			$char_types = split('_', $name);
 			$invert = false;
@@ -71,12 +58,12 @@ class Group {
 	private static function _capture_characters($char_types)
 	{
 		// To use in function below
-		$replacements = &self::$replacements;
+		$replacements = &Match\AnyOf::$replacements;
 		
 		$contents = array_reduce($char_types, function($result, $val) use ($replacements)
 		{
 			// Check that key exists
-			if(array_key_exists($val, self::$replacements))
+			if(array_key_exists($val, $replacements))
 			{
 				return $result . $replacements[$val];
 			}

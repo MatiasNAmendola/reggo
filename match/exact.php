@@ -15,7 +15,7 @@ class Exact extends Base {
 		}
 		else if(is_callable($string_or_callable))
 		{
-			$this->contents = call_user_func($contents));
+			$this->contents = call_user_func($contents);
 		}
 	}
 	

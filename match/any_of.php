@@ -8,6 +8,27 @@ class AnyOf extends Base {
 	private $inverted = false;
 	private $contents;
 	
+	public static $replacements = array(
+		'alpha' 	=> 'a-zA-ZåäöÅÄÖ',
+		'alphaeng'	=> 'a-zA-Z',
+		'lower'		=> 'a-zåäö',
+		'upper' 	=> 'A-ZÅÄÖ',
+		'num' 		=> '0-9',
+		'number' 	=> '0-9',
+		'dash' 		=> '\-\_',
+		'dot' 		=> '\.',
+		'period' 	=> '\.',
+		'space'		=> '\s'
+	);
+	
+	public static $numbers = array(
+		'once' 			=> 1,
+		'maby' 			=> '?',
+		'zero_or_one' 	=> '?',
+		'zero_or_more'	=> '*',
+		'one_or_more' 	=> '+',
+	);
+	
 	public function __construct($contents, $min = NULL, $max = NULL, $inverted = false)
 	{
 		parent::__construct($min, $max);
@@ -19,6 +40,15 @@ class AnyOf extends Base {
 	public function invert()
 	{
 		$this->inverted = true;
+	}
+	
+	public function __call($name, $arguments)
+	{
+		// If length
+		if(array_key_exists($name, self::$numbers))
+		{
+			$this->_set_length(self::$numbers[$name]);
+		}
 	}
 	
 	public function compile()

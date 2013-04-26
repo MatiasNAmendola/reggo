@@ -45,6 +45,9 @@ class Reggo {
 		return $this->main_group->groups();
 	}
 	
+	/**
+	 * Match against a string
+	 */
 	public function match($str)
 	{
 		$groups = $this->groups();
